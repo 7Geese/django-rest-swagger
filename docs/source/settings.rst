@@ -195,7 +195,7 @@ Then in app/views.py:
 
 .. code-block:: python
 
-    from django.core.urlresolvers import resolve
+    from django.urls import resolve
 
     from .flags import flag_is_active
 

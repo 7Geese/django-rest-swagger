@@ -11,7 +11,6 @@ try:
 except ImportError:
     from unittest2.case import SkipTest
 
-from django.core.urlresolvers import RegexURLResolver, RegexURLPattern
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.models import AnonymousUser, User
@@ -23,6 +22,7 @@ from django.utils.importlib import import_module
 from django.views.generic import View
 import django_filters
 
+from rest_framework.compat import RegexURLResolver, RegexURLPattern
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from rest_framework import serializers
