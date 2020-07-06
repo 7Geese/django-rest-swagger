@@ -22,7 +22,7 @@ from django.utils.importlib import import_module
 from django.views.generic import View
 import django_filters
 
-from rest_framework.compat import RegexURLResolver, RegexURLPattern
+from rest_framework.compat import URLResolver, URLPattern
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
 from rest_framework import serializers
@@ -982,7 +982,7 @@ def make_viewset_introspector(view_class):
 def make_apiview_introspector(view_class):
     return APIViewIntrospector(
         view_class, '/{pk}',
-        RegexURLResolver(r'^/(?P<{pk}>[^/]+)$', ''),
+        URLResolver(r'^/(?P<{pk}>[^/]+)$', ''),
         AnonymousUser(),
     )
 
@@ -1186,7 +1186,7 @@ class ViewSetMethodIntrospectorTests(TestCase):
 class BaseViewIntrospectorTest(TestCase):
     def test_get_description(self):
         introspector = APIViewIntrospector(
-            MockApiView, '/', RegexURLResolver(r'^/', ''), AnonymousUser())
+            MockApiView, '/', URLResolver(r'^/', ''), AnonymousUser())
         self.assertEqual('A Test View', introspector.get_description())
 
 
@@ -1235,7 +1235,7 @@ class BaseMethodIntrospectorTest(TestCase, DocumentationGeneratorMixin):
         return APIViewIntrospector(
             view_class,
             '/',
-            RegexURLResolver(r'^/$', ''),
+            URLResolver(r'^/$', ''),
             AnonymousUser(),
         )
 
@@ -1274,11 +1274,11 @@ class BaseMethodIntrospectorTest(TestCase, DocumentationGeneratorMixin):
                     return SerializerFoo
                 return SerializerBar
         class_introspector = APIViewIntrospector(
-            TestView, '/a', RegexURLPattern(r'^a/$', '', {'b': True}), AnonymousUser())
+            TestView, '/a', URLPattern(r'^a/$', '', {'b': True}), AnonymousUser())
         introspector = get_introspectors(class_introspector)['OPTIONS']
         self.assertEqual(SerializerFoo, introspector.get_serializer_class())
         class_introspector = APIViewIntrospector(
-            TestView, '/a', RegexURLPattern(r'^a/$', ''), AnonymousUser())
+            TestView, '/a', URLPattern(r'^a/$', ''), AnonymousUser())
         introspector = get_introspectors(class_introspector)['OPTIONS']
         self.assertEqual(SerializerBar, introspector.get_serializer_class())
 
@@ -1512,14 +1512,14 @@ class YAMLDocstringParserTests(TestCase, DocumentationGeneratorMixin):
         return APIViewIntrospector(
             view_class,
             '/',
-            RegexURLResolver(r'^/$', ''),
+            URLResolver(r'^/$', ''),
             AnonymousUser(),
         )
 
     def make_fbv_introspector(self, view):
         from .introspectors import WrappedAPIViewIntrospector
         return WrappedAPIViewIntrospector(
-            func_to_wrapper(view), '/', RegexURLResolver(r'^/$', ''), AnonymousUser()
+            func_to_wrapper(view), '/', URLResolver(r'^/$', ''), AnonymousUser()
         )
 
     def test_yaml_loader(self):

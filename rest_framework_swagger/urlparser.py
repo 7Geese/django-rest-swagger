@@ -7,7 +7,7 @@ from django.utils import six
 from django.utils.six.moves.urllib_parse import urljoin
 from django.contrib.admindocs.views import simplify_regex
 
-from rest_framework.compat import RegexURLResolver, RegexURLPattern
+from rest_framework.compat import URLResolver, URLPattern
 from rest_framework.views import APIView
 
 from .apidocview import APIDocView
@@ -150,7 +150,7 @@ class UrlParser(object):
         pattern_list = []
 
         for pattern in patterns:
-            if isinstance(pattern, RegexURLPattern):
+            if isinstance(pattern, URLPattern):
                 endpoint_data = self.__assemble_endpoint_data__(
                     pattern, prefix, filter_path=filter_path)
 
@@ -159,7 +159,7 @@ class UrlParser(object):
 
                 pattern_list.append(endpoint_data)
 
-            elif isinstance(pattern, RegexURLResolver):
+            elif isinstance(pattern, URLResolver):
 
                 if pattern.namespace is not None \
                         and pattern.namespace in exclude_namespaces:
